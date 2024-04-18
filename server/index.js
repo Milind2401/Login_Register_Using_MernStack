@@ -8,6 +8,23 @@ app.use(cors())
 
 mongoose.connect("mongodb://127.0.0.1:27017/LoginRegister");
 
+
+app.post("/login",(req,res)=>{
+    const {email,password}=req.body;
+    StudentModel.findOne({email:email})
+    .then(user=>{
+        if(user){
+            if(user.password===password){
+                res.json("Success")
+            }else{
+                res.json("Incorrect Password")
+            }
+        }else{
+            res.json("No record Exist")
+        }
+    })
+})
+
 app.post('/register',(req,res)=>{
     StudentModel.create(req.body)
     .then(student=>res.json(student))
